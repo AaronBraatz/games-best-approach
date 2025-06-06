@@ -62,7 +62,7 @@ class Lane:
 
     def __str__(self):
         """String variant of lane."""
-        lane = ' | '.join('XX' if n is None else f'{n:02d}' for n in self._lane)
+        lane = ' | '.join('><' if n is None else f'{n:02d}' for n in self._lane)
         return f'{self.color.name} ( {lane} )'
 
     @property
