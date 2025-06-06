@@ -85,9 +85,6 @@ class Lane:
         if any(p is None for p in possible_numbers):
             raise ValueError('possible lane numbers cannot be None')
 
-        if not self.can_close:
-            return possible_numbers[1:]
-
         return possible_numbers
 
     @property
@@ -106,13 +103,15 @@ class Lane:
             internal_index = LANE_MAX - number - 1
 
         last_possible = self.possible[0]
-        self._lane[internal_index] = None
 
         if self.can_close and number == last_possible:
             self._lane[-1] = None
 
+        self._lane[internal_index] = None
+
         return self
 
 if __name__ == '__main__':
-    print(Lane(Color.B).select(12).select(11).select(10).select(9).select(8).select(2))
+    l = Lane(Color.B).select(12).select(11).select(10).select(9).select(8)
+    print(l.select(2))
     print(Lane(Color.R).select(2).select(3).select(4).select(5).select(6).select(12))
