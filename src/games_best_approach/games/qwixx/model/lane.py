@@ -72,7 +72,7 @@ class Lane:
 
     @property
     def possible(self) -> list[int]:
-        """possible lane numbers."""
+        """Possible lane numbers."""
         reversed_lane = self._lane[::-1]
 
         if None not in self._lane:
