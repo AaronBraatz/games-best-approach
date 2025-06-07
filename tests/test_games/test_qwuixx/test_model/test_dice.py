@@ -6,7 +6,7 @@ import pytest
 from games_best_approach.games.qwixx.model.dice import Dice
 from games_best_approach.games.qwixx.model.lane import Color
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def fixed_random():
     """Fix random."""
     random.seed(0)
@@ -35,4 +35,4 @@ def test_dice_str(fixed_random) -> None:
         str(dice)
 
     dice.roll()
-    assert str(dice) == 'w\tw\tr\ty\tb\tg\n04\t04\t01\t03\t05\t04'
+    assert str(dice) == 'w1\tw2\tr\ty\tb\tg\n04\t04\t01\t03\t05\t04'

@@ -26,36 +26,36 @@ def board() -> Board:
 
 def test_board_init(board):
     """Test board model init."""
-    assert board.lanes[Color.R]._lane == ASC_LANE
-    assert board.lanes[Color.Y]._lane == ASC_LANE
-    assert board.lanes[Color.B]._lane == DESC_LANE
-    assert board.lanes[Color.G]._lane == DESC_LANE
+    assert board._lanes[Color.R]._lane == ASC_LANE
+    assert board._lanes[Color.Y]._lane == ASC_LANE
+    assert board._lanes[Color.B]._lane == DESC_LANE
+    assert board._lanes[Color.G]._lane == DESC_LANE
 
 def test_board_select_number(board):
     """Test board select number."""
     board.select(Color.R, 2)
-    assert board.lanes[Color.R]._lane == [None] + ASC_LANE[1:]
-    assert board.lanes[Color.Y]._lane == ASC_LANE
-    assert board.lanes[Color.B]._lane == DESC_LANE
-    assert board.lanes[Color.G]._lane == DESC_LANE
+    assert board._lanes[Color.R]._lane == [None] + ASC_LANE[1:]
+    assert board._lanes[Color.Y]._lane == ASC_LANE
+    assert board._lanes[Color.B]._lane == DESC_LANE
+    assert board._lanes[Color.G]._lane == DESC_LANE
 
     board.select(Color.B, 12)
-    assert board.lanes[Color.R]._lane == [None] + ASC_LANE[1:]
-    assert board.lanes[Color.Y]._lane == ASC_LANE
-    assert board.lanes[Color.B]._lane == [None] + DESC_LANE[1:]
-    assert board.lanes[Color.G]._lane == DESC_LANE
+    assert board._lanes[Color.R]._lane == [None] + ASC_LANE[1:]
+    assert board._lanes[Color.Y]._lane == ASC_LANE
+    assert board._lanes[Color.B]._lane == [None] + DESC_LANE[1:]
+    assert board._lanes[Color.G]._lane == DESC_LANE
 
     board.select(Color.R, 12)
-    assert board.lanes[Color.R]._lane == [None] + ASC_LANE[1:-2] + [None, 13]
-    assert board.lanes[Color.Y]._lane == ASC_LANE
-    assert board.lanes[Color.B]._lane == [None] + DESC_LANE[1:]
-    assert board.lanes[Color.G]._lane == DESC_LANE
+    assert board._lanes[Color.R]._lane == [None] + ASC_LANE[1:-2] + [None, 13]
+    assert board._lanes[Color.Y]._lane == ASC_LANE
+    assert board._lanes[Color.B]._lane == [None] + DESC_LANE[1:]
+    assert board._lanes[Color.G]._lane == DESC_LANE
 
     board.select(Color.B, 2)
-    assert board.lanes[Color.R]._lane == [None] + ASC_LANE[1:-2] + [None, 13]
-    assert board.lanes[Color.Y]._lane == ASC_LANE
-    assert board.lanes[Color.B]._lane == [None] + DESC_LANE[1:-2] + [None, 1]
-    assert board.lanes[Color.G]._lane == DESC_LANE
+    assert board._lanes[Color.R]._lane == [None] + ASC_LANE[1:-2] + [None, 13]
+    assert board._lanes[Color.Y]._lane == ASC_LANE
+    assert board._lanes[Color.B]._lane == [None] + DESC_LANE[1:-2] + [None, 1]
+    assert board._lanes[Color.G]._lane == DESC_LANE
 
 
 def test_board_possible(board):

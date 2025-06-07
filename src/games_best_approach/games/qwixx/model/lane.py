@@ -4,11 +4,12 @@ from __future__ import annotations
 from enum import Enum, auto
 from itertools import islice
 from typing import Iterator
+from zoneinfo import reset_tzpath
 
 MINIMAL_CLOSE_SELECTIONS = 5
 
 LANE_MIN = 2
-LANE_MAX = 13
+LANE_MAX = 12
 
 class Direction(Enum):
     """Direction of lane."""
@@ -56,9 +57,9 @@ class Lane:
         """Initialize lane."""
         self.color = color
         if self.asc:
-            self._lane = list(range(LANE_MIN, LANE_MAX + 1, color.direction.step))
+            self._lane = list(range(LANE_MIN, LANE_MAX + 2, color.direction.step))
         else:
-            self._lane = list(range(LANE_MAX - 1, LANE_MIN - 1 - 1, color.direction.step))
+            self._lane = list(range(LANE_MAX, LANE_MIN - 2, color.direction.step))
 
     def __str__(self):
         """String variant of lane."""
@@ -88,6 +89,25 @@ class Lane:
         return possible_numbers
 
     @property
+    def is_closed(self) -> bool:
+        """If lane is closed."""
+        return self._lane[-1] is None
+
+    def would_close(self, numbers: list[int]) -> bool:
+        """If select would close lane."""
+        if len(numbers) == 1:
+            return self.can_close and numbers == self.possible[0]
+
+        temp_lane = self._copy()
+        return temp_lane.select(numbers[0]).would_close(numbers[1:])
+
+    def _copy(self) -> Lane:
+        """Copy lane."""
+        temp_lane = Lane(self.color)
+        temp_lane._lane = self._lane.copy()
+        return temp_lane
+
+    @property
     def can_close(self) -> bool:
         """If lane can be closed."""
         return self._lane.count(None) >= MINIMAL_CLOSE_SELECTIONS
@@ -102,14 +122,27 @@ class Lane:
         else:
             internal_index = LANE_MAX - number - 1
 
-        last_possible = self.possible[0]
-
-        if self.can_close and number == last_possible:
+        if self.would_close([number]):
             self._lane[-1] = None
 
         self._lane[internal_index] = None
 
         return self
+
+    def is_select_possible(self, numbers: list[int]) -> bool:
+        """Check if select with number is possible."""
+        temp_lane = self._copy()
+        try:
+            for number in numbers:
+                temp_lane.select(number)
+        except ValueError:
+            return False
+        return True
+
+    @property
+    def score(self) -> int:
+        """Score of lane."""
+        return sum(range(1, self._lane.count(None)+1))
 
 if __name__ == '__main__':
     l = Lane(Color.B).select(12).select(11).select(10).select(9).select(8)
