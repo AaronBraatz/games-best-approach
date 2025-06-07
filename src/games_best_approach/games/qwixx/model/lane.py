@@ -96,7 +96,7 @@ class Lane:
     def would_close(self, numbers: list[int]) -> bool:
         """If select would close lane."""
         if len(numbers) == 1:
-            return self.can_close and numbers == self.possible[0]
+            return self.can_close and numbers[0] == self.possible[0]
 
         temp_lane = self._copy()
         return temp_lane.select(numbers[0]).would_close(numbers[1:])
@@ -120,7 +120,7 @@ class Lane:
         if self.asc:
             internal_index = number - LANE_MIN
         else:
-            internal_index = LANE_MAX - number - 1
+            internal_index = LANE_MAX - number
 
         if self.would_close([number]):
             self._lane[-1] = None
